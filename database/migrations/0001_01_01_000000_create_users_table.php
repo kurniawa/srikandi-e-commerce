@@ -17,6 +17,32 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            /**
+             * tambahan kolom
+             */
+            $table->string('username', 20)->unique();
+            $table->string('id_type', 20)->nullable(); // di Indonesia biasanya KTP
+            $table->string('id_number', 50)->nullable()->unique(); // nomor KTP
+            $table->string('phone_type', 20)->nullable();
+            $table->string('phone', 20)->nullable()->unique();
+            $table->string('role', 20)->default('customer'); // ['developer', 'superadmin', 'admin', 'user', 'customer']
+            $table->string('type', 20)->default('guest'); // ["reseller", "dropshipper", "seller", "buyer"]
+            // $table->string('category', 20)->default('external'); // ['internal', 'external']
+            $table->string('rank', 20)->nullable(); // golongan user, misal untuk user biasa: silver, gold, platinum
+            $table->enum('is_creditor', ['yes', 'no'])->default('no'); // ["creditor", "debtor"]
+            // $table->foreignId('creditor_id')->nullable()->constrained('users')->onDelete('set null'); // jika dia debtor, maka creditor_id wajib diisi
+            // $table->string('account_type', 20)->nullable();
+            $table->tinyInteger('clearance_level')->default(1);
+            // $table->tinyInteger('access_level')->nullable(); // akses ke konten mana saja
+            $table->enum('gender', ['male', 'female'])->nullable();
+            $table->string('photo')->nullable(); // path ke foto profil
+            $table->date('birthdate')->nullable();
+            $table->text('description')->nullable();
+            $table->string('created_by', 20)->nullable(); // username dari auth user yang membuat
+            $table->string('updated_by', 20)->nullable(); // username dari auth user yang melakukan update
+            //
+            //
+            
             $table->rememberToken();
             $table->timestamps();
         });
