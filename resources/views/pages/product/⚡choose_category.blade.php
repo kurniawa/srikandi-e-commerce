@@ -9,5 +9,14 @@ new class extends Component
 ?>
 
 <div>
-    {{-- Let all your things have their places; let each part of your business have its time. - Benjamin Franklin --}}
+    <div class="py-6">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white shadow-sm sm:rounded-lg p-6">
+                <div class="flex gap-2">
+                    <a href="#" wire:navigate>Gold Bullion</a>
+                    <a href="{{ route('product.create', ['category' => 'jewelry']) }}" wire:navigate>Jewelry</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
