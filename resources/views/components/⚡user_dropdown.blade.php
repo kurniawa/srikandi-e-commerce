@@ -70,7 +70,7 @@ new class extends Component
         class="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-md p-1 z-50"
     >
         <a
-            href="/products/choose-category"
+            href="/product/choose_category"
             wire:navigate
             class="block px-3 py-1 bg-emerald-300 font-bold text-white rounded hover:bg-emerald-400"
         >

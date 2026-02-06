@@ -1,10 +1,16 @@
 <?php
 
 use Livewire\Component;
-
+use App\Models\GoldColor;
 new class extends Component
 {
-    $q = $request->get();
+    public string $category = 'jewelry';
+    public $gold_colors;
+
+    public function mount()
+    {
+        $this->gold_colors = GoldColor::all();
+    }
 };
 ?>
 
@@ -14,7 +20,7 @@ new class extends Component
             <div class="grid grid-cols-2 gap-x-2 gap-y-4">
                 <div class="grid gap-2">
                     <label>Kategori Produk:</label>
-                    <input type="text" name="product_category" value="" class="bg-gray-50 font-bold text-xs" disabled />
+                    <input type="text" name="product_category" wire:model="category" class="bg-gray-50 font-bold text-xs" disabled />
                 </div>
                 <div class="grid gap-2">
                     <label>Tipe Ornament:</label>
@@ -72,11 +78,7 @@ new class extends Component
                 </div>
                 <div class="grid gap-2">
                     <label>Harga per gram:</label>
-                    <MoneyInput
-                        v-model="form.price_per_gram"
-                        placeholder="Harga total"
-                        class="border rounded-md px-3 py-1 w-full"
-                    />
+                    <x-number-input></x-number-input>
                 </div>
                 <div class="grid gap-2">
                     <Label>Harga total:</Label>
