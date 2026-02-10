@@ -28,7 +28,7 @@ new class extends Component
                         v-model="form.ornament_type"
                         v-model:selected="form.ornament_type_slug"
                         table="ornament_types"
-                        column="localname"
+                        column="nama"
                         parent="category"
                         parent-value="jewelry"
                         placeholder="Tipe Ornament"
@@ -56,7 +56,7 @@ new class extends Component
                     <label>Warna Emas:</label>
                     <select name="gold_color">
                         @foreach ($gold_colors as $color)
-                        <option value="{{ $color->slug }}">{{ $color->localname }}</option>
+                        <option value="{{ $color->slug }}">{{ $color->nama }}</option>
                         @endforeach
                     </select>
                 </div>

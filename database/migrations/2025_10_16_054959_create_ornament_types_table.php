@@ -17,7 +17,7 @@ return new class extends Migration
             $table->tinyInteger('parent_id')->nullable()->constrained('ornament_types')->onDelete('set null');
             $table->string('parent_slug', 50)->nullable();
             $table->string('name', 50);
-            $table->string('localname', 50)->nullable();
+            $table->string('nama', 50)->nullable();
             $table->string('slug', 50)->unique();
             $table->text('description')->nullable();
             $table->string('barcode', 2)->nullable()->unique();

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->tinyInteger('category_id')->constrained('product_categories')->onDelete('cascade');
+            $table->tinyInteger('category_id')->constrained('categories')->onDelete('cascade');
             $table->string('category_slug', 50);
             $table->string('shortname', 100);
             $table->string('name');
@@ -47,7 +47,7 @@ return new class extends Migration
      *
      * Digit ke-3, 4, 5: kode ornament->varian
      * Digit ke-5: kode gold_color
-     * Digit ke-6,7: kode gold_purity, yakni merujuk pada tabel gold_standards
+     * Digit ke-6,7: kode purity, yakni merujuk pada tabel gold_standards
      * Digit ke 8 s.d. 13 (5 digit terakhir): kode urutan item yang diinsert, artinya masih bisa menampung sebanyak 99.999 item.
      *
      */

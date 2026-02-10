@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('gold_bullions', function (Blueprint $table) {
+        Schema::create('bullions', function (Blueprint $table) {
             $table->id();
-            $table->decimal('gold_purity', 5, 2)->default(99.99);
+            $table->decimal('purity', 5, 2)->default(99.99);
             $table->string('shortname', 200);
             $table->string('annotation', 50)->nullable()->comment('Keterangan tambahan pada LM, bisa ditulis di dalam kurung tertentu');
             $table->string('name')->comment('Nama LM, lebih panjang dari shortname, disertai detail specs LM tersebut');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('gold_bullions');
+        Schema::dropIfExists('bullions');
     }
 };

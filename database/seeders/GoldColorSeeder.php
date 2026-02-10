@@ -15,7 +15,7 @@ class GoldColorSeeder extends Seeder
         $goldColors = [
             [
                 'name' => 'Yellow Gold',
-                'localname' => 'Emas Kuning',
+                'nama' => 'Emas Kuning',
                 'slug' => 'yellow-gold',
                 'description' => 'kuning',
                 'codename' => 'y-g',
@@ -23,7 +23,7 @@ class GoldColorSeeder extends Seeder
             ],
             [
                 'name' => 'Rose Gold',
-                'localname' => 'Rose Gold',
+                'nama' => 'Rose Gold',
                 'slug' => 'rose-gold',
                 'description' => 'rose gold',
                 'codename' => 'r-g',
@@ -31,7 +31,7 @@ class GoldColorSeeder extends Seeder
             ],
             [
                 'name' => 'Chrome Gold',
-                'localname' => 'Chrome',
+                'nama' => 'Chrome',
                 'slug' => 'chrome-gold',
                 'description' => 'chrome',
                 'codename' => 'chr-g',
@@ -39,7 +39,7 @@ class GoldColorSeeder extends Seeder
             ],
             [
                 'name' => 'White Gold',
-                'localname' => 'Emas Putih',
+                'nama' => 'Emas Putih',
                 'slug' => 'white-gold',
                 'description' => 'putih',
                 'codename' => 'wh-g',

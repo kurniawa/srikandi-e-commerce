@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('gold_colors', function (Blueprint $table) {
             $table->tinyIncrements('id');
             $table->string('name', 20);
-            $table->string('localname', 20);
+            $table->string('nama', 20);
             $table->string('slug', 20)->unique();
             $table->string('description', 20)->nullable();
             $table->string('codename')->unique();

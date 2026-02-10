@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('color', 50)->nullable()->comment('keterangan ini diperlukan terutama untuk gems');
             $table->string('warna', 50)->nullable()->comment('color dalam bahasa indonesia');
             $table->string('name', 50)->nullable();
-            $table->string('localname', 50)->nullable();
+            $table->string('nama', 50)->nullable();
             $table->enum('transparency', ['transparent', 'translucent', 'opaque'])->nullable();
             $table->enum('cut', ['round', 'princess', 'emerald', 'asscher', 'cushion', 'marquise', 'oval', 'radiant', 'pear', 'heart'])->nullable();
             $table->enum('clarity', ['FL', 'IF', 'VVS1', 'VVS2', 'VS1', 'VS2', 'SI1', 'SI2', 'I1', 'I2', 'I3'])->nullable();

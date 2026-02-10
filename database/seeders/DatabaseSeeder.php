@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
         \Illuminate\Support\Facades\DB::table('users')->insert($users);
 
         $this->call([
-            ProductCategorySeeder::class,
+            CategorySeeder::class,
             OrnamentSeeder::class,
             GoldColorSeeder::class,
             GoldStandardSeeder::class,

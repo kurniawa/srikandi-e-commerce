@@ -13,19 +13,19 @@ class OrnamentSeeder extends Seeder
     public function run(): void
     {
         $ornament_types = [
-            ['parent_id' => null, 'parent_slug' => null, 'name' => 'Earring', 'localname' => 'Anting', 'slug' => 'earring', 'barcode' => '01'],
-            ['parent_id' => null, 'parent_slug' => null, 'name' => 'Ear Stud', 'localname' => 'Giwang', 'slug' => 'ear-stud', 'barcode' => '02'],
-            ['parent_id' => null, 'parent_slug' => null, 'name' => 'Ring', 'localname' => 'Cincin', 'slug' => 'ring', 'barcode' => '03'],
-            ['parent_id' => null, 'parent_slug' => null, 'name' => 'Necklace', 'localname' => 'Kalung', 'slug' => 'necklace', 'barcode' => '05'],
-            ['parent_id' => null, 'parent_slug' => null, 'name' => 'Bracelet', 'localname' => 'Gelang Tangan', 'slug' => 'bracelet', 'barcode' => '06'],
-            ['parent_id' => null, 'parent_slug' => null, 'name' => 'Anklet', 'localname' => 'Gelang Kaki', 'slug' => 'anklet', 'barcode' => '07'],
-            ['parent_id' => null, 'parent_slug' => null, 'name' => 'Pendant', 'localname' => 'Liontin', 'slug' => 'pendant', 'barcode' => '08'],
-            ['parent_id' => null, 'parent_slug' => null, 'name' => 'Brooch', 'localname' => 'Bros', 'slug' => 'brooch', 'barcode' => '10'],
-            ['parent_id' => 4, 'parent_slug' => 'necklace', 'name' => 'Choker', 'localname' => 'Kalung Choker', 'slug' => 'choker', 'barcode' => '17'],
-            ['parent_id' => 5, 'parent_slug' => 'bracelet', 'name' => 'Chain Bracelet', 'localname' => 'Gelang Tangan Rantai', 'slug' => 'chain-bracelet', 'barcode' => '11'],
-            ['parent_id' => 5, 'parent_slug' => 'bracelet', 'name' => 'Round Bracelet', 'localname' => 'Gelang Tangan Bulat', 'slug' => 'round-bracelet', 'barcode' => '12'],
-            ['parent_id' => 6, 'parent_slug' => 'anklet', 'name' => 'Chain Anklet', 'localname' => 'Gelang Kaki Rantai', 'slug' => 'chain-anklet', 'barcode' => '13'],
-            ['parent_id' => 6, 'parent_slug' => 'anklet', 'name' => 'Round Anklet', 'localname' => 'Gelang Kaki Bulat', 'slug' => 'round-anklet', 'barcode' => '15'],
+            ['parent_id' => null, 'parent_slug' => null, 'name' => 'Earring', 'nama' => 'Anting', 'slug' => 'earring', 'barcode' => '01'],
+            ['parent_id' => null, 'parent_slug' => null, 'name' => 'Ear Stud', 'nama' => 'Giwang', 'slug' => 'ear-stud', 'barcode' => '02'],
+            ['parent_id' => null, 'parent_slug' => null, 'name' => 'Ring', 'nama' => 'Cincin', 'slug' => 'ring', 'barcode' => '03'],
+            ['parent_id' => null, 'parent_slug' => null, 'name' => 'Necklace', 'nama' => 'Kalung', 'slug' => 'necklace', 'barcode' => '05'],
+            ['parent_id' => null, 'parent_slug' => null, 'name' => 'Bracelet', 'nama' => 'Gelang Tangan', 'slug' => 'bracelet', 'barcode' => '06'],
+            ['parent_id' => null, 'parent_slug' => null, 'name' => 'Anklet', 'nama' => 'Gelang Kaki', 'slug' => 'anklet', 'barcode' => '07'],
+            ['parent_id' => null, 'parent_slug' => null, 'name' => 'Pendant', 'nama' => 'Liontin', 'slug' => 'pendant', 'barcode' => '08'],
+            ['parent_id' => null, 'parent_slug' => null, 'name' => 'Brooch', 'nama' => 'Bros', 'slug' => 'brooch', 'barcode' => '10'],
+            ['parent_id' => 4, 'parent_slug' => 'necklace', 'name' => 'Choker', 'nama' => 'Kalung Choker', 'slug' => 'choker', 'barcode' => '17'],
+            ['parent_id' => 5, 'parent_slug' => 'bracelet', 'name' => 'Chain Bracelet', 'nama' => 'Gelang Tangan Rantai', 'slug' => 'chain-bracelet', 'barcode' => '11'],
+            ['parent_id' => 5, 'parent_slug' => 'bracelet', 'name' => 'Round Bracelet', 'nama' => 'Gelang Tangan Bulat', 'slug' => 'round-bracelet', 'barcode' => '12'],
+            ['parent_id' => 6, 'parent_slug' => 'anklet', 'name' => 'Chain Anklet', 'nama' => 'Gelang Kaki Rantai', 'slug' => 'chain-anklet', 'barcode' => '13'],
+            ['parent_id' => 6, 'parent_slug' => 'anklet', 'name' => 'Round Anklet', 'nama' => 'Gelang Kaki Bulat', 'slug' => 'round-anklet', 'barcode' => '15'],
         ];
 
         $ornaments = [
