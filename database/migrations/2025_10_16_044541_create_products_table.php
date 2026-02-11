@@ -13,14 +13,12 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->tinyInteger('category_id')->constrained('categories')->onDelete('cascade');
-            $table->string('category_slug', 50);
+            $table->string('slug')->unique();
             $table->string('shortname', 100);
             $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('annotation', 50)->nullable()->comment('Keterangan tambahan pada nama perhiasan, bisa ditulis di dalam kurung tertentu');
+            $table->decimal('purity', 5, 2);
             $table->decimal('weight', 7, 2)->nullable();
-            $table->decimal('weight_fee', 10, 2);
-            $table->decimal('weight_price', 15, 2);
             $table->decimal('price', 15, 2);
             $table->string('unit', 20)->nullable();
             $table->string('tray', 20)->nullable();

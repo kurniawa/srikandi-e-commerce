@@ -12,6 +12,11 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $attributes = [
+            ['name' => 'Product Type', 'slug' => 'product-type'], // jewelry, bullions, accessory, ornament, etc.
+            ['name' => 'Metal Type', 'slug' => 'metal-type'],
+            ['name' => 'Gold Color', 'slug' => 'gold-color'],
+            ['name' => 'Fineness', 'slug' => 'fineness'],
+        ];
     }
 }

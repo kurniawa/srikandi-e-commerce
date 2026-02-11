@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('ornaments', function (Blueprint $table) {
             $table->smallIncrements('id');
-            $table->tinyInteger('type_id')->constrained('ornament_types')->onDelete('cascade');
-            $table->string('type', 50);
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
+            $table->string('category_slug');
             $table->string('varian', 100);
             $table->string('slug', 100)->unique();
             $table->string('barcode', 2)->nullable(); // tidak unique karena tergantung tipe ornament, masing-masing tipe ornament bisa memiliki jumlah varian maksimal 99

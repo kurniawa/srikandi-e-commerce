@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('jewelries', function (Blueprint $table) {
             $table->id();
-            $table->string('metal_type', 20)->default('gold');
+            $table->string('material', 20)->default('gold');
             $table->smallInteger('ornament_id')->nullable()->constrained('ornaments')->onDelete('set null');
             $table->string('ornament_type', 50)->comment('Slug dari ornament_type->name atau ornament->type');
             $table->string('ornament_varian', 100)->comment('Slug dari ornament->varian');

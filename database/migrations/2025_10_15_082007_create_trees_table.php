@@ -11,15 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('trees', function (Blueprint $table) {
             $table->id();
-            $table->string('table')->default('products');
-            $table->foreignId('parent_id')->nullable()->constrained('categories')->onDelete('set null');
+            $table->string('term');
+            $table->foreignId('parent_id')->nullable()->constrained('trees')->onDelete('set null');
             $table->string('parent_slug')->nullable();
+            $table->string('classification')->nullable();
+            $table->string('class')->nullable();
             $table->string('name');
             $table->string('nama');
             $table->string('slug')->unique();
             $table->text('description')->nullable();
+            $table->boolean('has_children')->default(false);
         });
     }
 
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('trees');
     }
 };
