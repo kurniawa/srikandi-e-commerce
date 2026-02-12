@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class GoldStandard extends Model
+class Certification extends Model
 {
     //
 }

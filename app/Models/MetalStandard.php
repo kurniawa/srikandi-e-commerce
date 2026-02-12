@@ -4,8 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class GoldColor extends Model
+class MetalStandard extends Model
 {
     protected $guarded = ['id'];
-    public $timestamps = false;
 }

@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('jewelries', function (Blueprint $table) {
             $table->id();
             $table->string('material', 20)->default('gold');
-            $table->smallInteger('ornament_id')->nullable()->constrained('ornaments')->onDelete('set null');
+            $table->foreignId('ornament_id')->nullable()->constrained('ornaments')->onDelete('set null');
             $table->string('ornament_type', 50)->comment('Slug dari ornament_type->name atau ornament->type');
             $table->string('ornament_varian', 100)->comment('Slug dari ornament->varian');
-            $table->string('gold_color');
-            $table->decimal('purity', 5, 2);
+            $table->string('color'); // gold_color atau warna lain untuk non-gold jewelry
+            $table->decimal('fineness', 5, 2);
             $table->string('shortname', 200);
             $table->string('annotation', 50)->nullable()->comment('Keterangan tambahan pada nama perhiasan, bisa ditulis di dalam kurung tertentu');
             $table->string('name')->comment('Nama lengkap perhiasan, lebih panjang dari shortname, disertai detail specs perhiasan tersebut');

@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('gold_standards', function (Blueprint $table) {
+        Schema::create('metal_standards', function (Blueprint $table) {
             $table->tinyIncrements('id');
             $table->string('name', 20);
             $table->string('slug')->unique();
             $table->string('class', 20);
             $table->decimal('purity', 5, 2);
+            $table->decimal('fineness', 5, 1);
             $table->tinyInteger('carat');
             $table->decimal('carat_ratio', 5, 2);
             $table->string('barcode', 2)->nullable();
+            $table->timestamps();
         });
     }
 
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('gold_standards');
+        Schema::dropIfExists('metal_standards');
     }
 };

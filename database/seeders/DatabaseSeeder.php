@@ -36,6 +36,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             TreeSeeder::class,
+            AttributeSeeder::class,
+            CertificationSeeder::class,
+            ProductSeeder::class,
             GoldColorSeeder::class,
             GoldStandardSeeder::class,
             AccessorySeeder::class,

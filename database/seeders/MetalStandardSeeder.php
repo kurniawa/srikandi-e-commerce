@@ -12,7 +12,7 @@ class GoldStandardSeeder extends Seeder
      */
     public function run(): void
     {
-        $goldStandards = [
+        $standards = [
             ['name'=>'200','slug'=>'200','class'=>'md','purity'=>20,'carat'=>5,'carat_ratio'=>20.83,'barcode'=>'01'],
             ['name'=>'250','slug'=>'250','class'=>'md','purity'=>25,'carat'=>6,'carat_ratio'=>25,'barcode'=>'02'],
             ['name'=>'300','slug'=>'300','class'=>'md','purity'=>30,'carat'=>7,'carat_ratio'=>29.17,'barcode'=>'03'],
@@ -34,9 +34,18 @@ class GoldStandardSeeder extends Seeder
             ['name'=>'875','slug'=>'875','class'=>'23','purity'=>87.5,'carat'=>21,'carat_ratio'=>87.5,'barcode'=>'21'],
             ['name'=>'920','slug'=>'920','class'=>'24','purity'=>92,'carat'=>22,'carat_ratio'=>91.67,'barcode'=>'22'],
             ['name'=>'950','slug'=>'950','class'=>'24','purity'=>95,'carat'=>23,'carat_ratio'=>95.83,'barcode'=>'23'],
-            ['name'=>'9999','slug'=>'9999','class'=>'24','purity'=>99.99,'carat'=>24,'carat_ratio'=>100.00,'barcode'=>'25'],
+            ['name'=>'9999','slug'=>'999','class'=>'24','purity'=>99.9,'carat'=>24,'carat_ratio'=>100.00,'barcode'=>'25'],
+            ['name'=>'9999','slug'=>'9999','class'=>'24','purity'=>99.99,'carat'=>24,'carat_ratio'=>100.00,'barcode'=>'26'],
         ];
 
-        \Illuminate\Support\Facades\DB::table('gold_standards')->insert($goldStandards);
+        // Prepare data for insertion
+        // Add fineness field
+        // fineness = purity * 10
+        $metal_standards = array_map(function ($standard) {
+            $standard['fineness'] = $standard['purity'] * 10;
+            return $standard;
+        }, $standards);
+
+        \Illuminate\Support\Facades\DB::table('metal_standards')->insert($metal_standards);
     }
 }
