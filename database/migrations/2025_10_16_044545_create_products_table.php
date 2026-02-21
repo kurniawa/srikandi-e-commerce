@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('metal_standard_id')->constrained('metal_standards');
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->foreignId('metal_standard_id')->nullable()->constrained()->onDelete('set null');
             $table->string('slug')->unique();
             $table->string('shortname', 100);
             $table->string('name');
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->decimal('price', 15, 2);
             $table->string('unit', 20)->nullable();
             $table->string('status', 20)->default('ready'); // ['ready', 'on display', 'active', 'inactive', 'archived', 'sold', 'out of stock', 'buyback', 'sorted', 'cleaned']
+            $table->unsignedSmallInteger('year')->nullable();
             $table->text('description')->nullable();
             $table->string('barcode', 13)->nullable()->unique();
             $table->string('created_by', 20)->nullable(); // username dari auth user yang membuat

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('metal_standards', function (Blueprint $table) {
-            $table->tinyIncrements('id');
+            $table->id();
             $table->string('name', 20);
             $table->string('slug')->unique();
             $table->string('class', 20);

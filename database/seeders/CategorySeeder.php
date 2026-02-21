@@ -5,14 +5,14 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class TreeSeeder extends Seeder
+class CategorySeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $trees = [
+        $categories = [
             ['term' => 'products', 'parent_id' => null, 'parent_slug' => null, 'classification' => null, 'class' => null, 'name' => 'Jewelry', 'nama' => 'Perhiasan', 'slug' => 'jewelry', 'description' => null, 'has_children' => true],
             ['term' => 'products', 'parent_id' => null, 'parent_slug' => null, 'classification' => null, 'class' => null, 'name' => 'Bullions', 'nama' => 'LM', 'slug' => 'bullions', 'description' => null, 'has_children' => true],
             ['term' => 'products', 'parent_id' => 1, 'parent_slug' => 'jewelry', 'classification' => 'material', 'class' => 'gold', 'name' => 'Gold Jewelry', 'nama' => 'Perhiasan Emas', 'slug' => 'gold-jewelry', 'description' => null, 'has_children' => false],
@@ -145,6 +145,6 @@ class TreeSeeder extends Seeder
         // foreach ($categories as $category) {
         //     \App\Models\ProductCategory::create($category);
         // }
-        DB::table('trees')->insert($trees);
+        DB::table('categories')->insert($categories);
     }
 }

@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('trees', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('term');
-            $table->foreignId('parent_id')->nullable()->constrained('trees')->onDelete('set null');
+            $table->foreignId('parent_id')->nullable()->constrained('categories')->onDelete('set null');
             $table->string('parent_slug')->nullable();
             $table->string('classification')->nullable();
             $table->string('class')->nullable();
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('trees');
+        Schema::dropIfExists('categories');
     }
 };
