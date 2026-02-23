@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('classification')->nullable();
             $table->string('class')->nullable();
             $table->string('name');
-            $table->string('nama');
+            $table->string('nama')->nullable();
             $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->boolean('has_children')->default(false);

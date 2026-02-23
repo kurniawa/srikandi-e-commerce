@@ -1,15 +1,28 @@
 <?php
 
 use Livewire\Component;
-use App\Models\GoldColor;
+use App\Models\Attribute;
+use App\Models\AttributeValue;
 new class extends Component
 {
-    public string $category = 'jewelry';
+    public string $category;
+    public $attribute_list;
+    public $attribute_values;
+    public $metal_types;
     public $gold_colors;
+    public $conditions;
 
     public function mount()
     {
-        $this->gold_colors = GoldColor::all();
+        $this->category = request()->query('category', '');
+        $this->attribute_list = Attribute::orderBy('id')->pluck('slug')->toArray();
+        $this->attribute_values = AttributeValue::select('attribute_id', 'attribute_slug', 'value')->whereIn('attribute_slug', $this->attribute_list)->get()->groupBy('attribute_slug');
+        $this->metal_types = $this->attribute_values['metal-type'] ?? [];
+        $this->gold_colors = $this->attribute_values['gold-color'] ?? [];
+        $this->conditions = $this->attribute_values['condition'] ?? [];
+        dump($this->attribute_list);
+        dump($this->attribute_values);
+        dd($this->metal_types);
     }
 };
 ?>
