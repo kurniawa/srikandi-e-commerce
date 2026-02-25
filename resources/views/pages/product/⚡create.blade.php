@@ -2,27 +2,38 @@
 
 use Livewire\Component;
 use App\Models\Attribute;
+use App\Models\Category;
 use App\Models\AttributeValue;
 new class extends Component
 {
     public string $category;
+    public $ornament_types;
     public $attribute_list;
-    public $attribute_values;
+    public array $attribute_values;
     public $metal_types;
     public $gold_colors;
     public $conditions;
 
     public function mount()
     {
-        $this->category = request()->query('category', '');
+        // $this->category = request()->query('category', '');
+        $this->ornament_types = Category::select('nama', 'slug')->where('classification', 'ornament_types')->get()->toArray();
         $this->attribute_list = Attribute::orderBy('id')->pluck('slug')->toArray();
-        $this->attribute_values = AttributeValue::select('attribute_id', 'attribute_slug', 'value')->whereIn('attribute_slug', $this->attribute_list)->get()->groupBy('attribute_slug');
+        // $this->attribute_values = AttributeValue::select('attribute_id', 'attribute_slug', 'value')->whereIn('attribute_slug', $this->attribute_list)->get();
+        $this->attribute_values = AttributeValue::select('attribute_id', 'attribute_slug', 'slug', 'value')
+            ->whereIn('attribute_slug', $this->attribute_list)
+            ->get()
+            ->groupBy('attribute_slug')
+            ->map(fn ($items) => $items->toArray())
+            ->toArray();
         $this->metal_types = $this->attribute_values['metal-type'] ?? [];
         $this->gold_colors = $this->attribute_values['gold-color'] ?? [];
         $this->conditions = $this->attribute_values['condition'] ?? [];
-        dump($this->attribute_list);
-        dump($this->attribute_values);
-        dd($this->metal_types);
+        // dump($this->attribute_list);
+        // dump($this->attribute_values);
+        // dd($this->metal_types);
+
+        // dd($this->gold_colors);
     }
 };
 ?>
@@ -37,20 +48,16 @@ new class extends Component
                 </div>
                 <div class="grid gap-2">
                     <label>Tipe Ornament:</label>
-                    <Autocomplete
-                        v-model="form.ornament_type"
-                        v-model:selected="form.ornament_type_slug"
-                        table="ornament_types"
-                        column="nama"
-                        parent="category"
-                        parent-value="jewelry"
-                        placeholder="Tipe Ornament"
-                    />
-                    <InputError :message="form.errors.ornament_type" />
+                    <select name="ornament_type">
+                        <option value="" disabled>Pilih Tipe Ornament</option>
+                        @foreach ($ornament_types as $type)
+                        <option value="{{ Str::slug($type['slug']) }}">{{ $type['nama'] }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="grid gap-2">
                     <label>Varian Ornament:</label>
-                    <Autocomplete
+                    {{-- <Autocomplete
                         v-model="form.ornament_variant"
                         v-model:selected="form.ornament_variant_slug"
                         table="ornaments"
@@ -59,7 +66,7 @@ new class extends Component
                         :parent-value="form.ornament_type_slug"
                         placeholder="Varian Ornament"
                     />
-                    <InputError :message="form.errors.ornament_variant" />
+                    <InputError :message="form.errors.ornament_variant" /> --}}
                 </div>
                 <div class="grid gap-2">
                     <label>Deskripsi (opt.):</label>
@@ -69,13 +76,13 @@ new class extends Component
                     <label>Warna Emas:</label>
                     <select name="gold_color">
                         @foreach ($gold_colors as $color)
-                        <option value="{{ $color->slug }}">{{ $color->nama }}</option>
+                        <option value="{{ $color['slug'] }}">{{ $color['value'] }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="grid gap-2">
                     <label>Kadar:</label>
-                    <Autocomplete
+                    {{-- <Autocomplete
                         v-model="form.gold_ratio"
                         v-model:selected="form.gold_ratio_slug"
                         table="gold_standards"
@@ -83,7 +90,7 @@ new class extends Component
                         :parent="null"
                         :parent-value="null"
                         placeholder="Kadar"
-                    />
+                    /> --}}
                 </div>
                 <div class="grid gap-2">
                     <label>Berat (g):</label>
@@ -102,7 +109,7 @@ new class extends Component
                     />
                     <InputError :message="form.errors.total_price" />
                 </div>
-                <div v-if="selectedSpecs.includes('checkbox_gems')">
+                {{-- <div v-if="selectedSpecs.includes('checkbox_gems')">
                     <div v-for="(gem, index) in form.gems" :key="index" class="mb-4">
                         <ComponentGem
                             v-model:colorName="gem.color_name"
@@ -113,15 +120,15 @@ new class extends Component
                         />
                     </div>
                     <button type="button" @click="addGem" class="bg-emerald-400 text-white font-bold rounded-2xl py-1 px-2">+ Tambah Gem</button>
-                </div>
+                </div> --}}
                 <!-- <ComponentToys  v-if="selectedSpecs.includes('checkbox_toys')" />
                 <ComponentSize  v-if="selectedSpecs.includes('checkbox_size')" />
                 <ComponentBrand v-if="selectedSpecs.includes('checkbox_brand')" />
                 <ComponentPlate v-if="selectedSpecs.includes('checkbox_plate')" /> -->
             </div>
 
-            <SpecOptions v-model="selectedSpecs" />
-            <Button
+            {{-- <SpecOptions v-model="selectedSpecs" /> --}}
+            {{-- <Button
                 type="submit"
                 class="mt-4 w-full"
                 :tabindex="4"
@@ -133,7 +140,8 @@ new class extends Component
                     class="h-4 w-4 animate-spin"
                 />
                 Submit
-            </Button>
+            </Button> --}}
+            <button type="submit" class="bg-emerald-500 text-white font-bold rounded-2xl py-2 px-4 w-full">Submit</button>
         </form>
     </div>
 </div>
