@@ -4,10 +4,17 @@ use Livewire\Component;
 use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\AttributeValue;
+use Illuminate\Support\Collection;
+
 new class extends Component
 {
     public string $category;
     public $ornament_types;
+    public string $selected_ornament_type = '';
+    public Collection $ornament_varians;
+    public string $inputed_ornament_varian = '';
+    public string $selected_ornament_varian = '';
+    public array $filtered_ornament_varians = [];
     public $attribute_list;
     public array $attribute_values;
     public $metal_types;
@@ -16,8 +23,10 @@ new class extends Component
 
     public function mount()
     {
-        // $this->category = request()->query('category', '');
+        $this->category = Category::where('slug', request()->query('category', ''))->first()->nama;
+        // dd($this->category);
         $this->ornament_types = Category::select('nama', 'slug')->where('classification', 'ornament_types')->get()->toArray();
+        // $this->updatedSelectedOrnamentType($this->selected_ornament_type);
         $this->attribute_list = Attribute::orderBy('id')->pluck('slug')->toArray();
         // $this->attribute_values = AttributeValue::select('attribute_id', 'attribute_slug', 'value')->whereIn('attribute_slug', $this->attribute_list)->get();
         $this->attribute_values = AttributeValue::select('attribute_id', 'attribute_slug', 'slug', 'value')
@@ -35,6 +44,29 @@ new class extends Component
 
         // dd($this->gold_colors);
     }
+
+    public function updatedSelectedOrnamentType($value) {
+        $data = Category::select('slug', 'name', 'id')->where('parent_slug', $value)->get();
+        $this->ornament_varians = $data ?? collect();
+        // dd($this->ornament_varians);
+    }
+
+    public function updatedInputedOrnamentVarian($value) {
+        $this->filtered_ornament_varians = $this->ornament_varians->filter(function($item) use ($value) {
+            return str_contains(strtolower($item->name), strtolower($value));
+        })->values()->toArray();
+        // dd($this->filtered_ornament_varians);
+    }
+
+    public function selectOrnamentVarian($id) {
+        $selected = $this->ornament_varians->firstWhere('id', $id);
+        // dd($selected);
+        $this->selected_ornament_varian = $selected->slug;
+        // dd($this->selected_ornament_varian);
+        // $this->selected_ornament_varian = $this->ornament_varians->firstWhere('id', $id);
+        $this->inputed_ornament_varian = $selected->name;
+        $this->filtered_ornament_varians = [];
+    }
 };
 ?>
 
@@ -44,11 +76,11 @@ new class extends Component
             <div class="grid grid-cols-2 gap-x-2 gap-y-4">
                 <div class="grid gap-2">
                     <label>Kategori Produk:</label>
-                    <input type="text" name="product_category" wire:model="category" class="bg-gray-50 font-bold text-xs" disabled />
+                    <input type="text" name="product_category" wire:model="category" class="bg-gray-50 font-bold text-xs w-full" disabled />
                 </div>
                 <div class="grid gap-2">
                     <label>Tipe Ornament:</label>
-                    <select name="ornament_type">
+                    <select wire:model.live="selected_ornament_type" class="border rounded w-full">
                         <option value="" disabled>Pilih Tipe Ornament</option>
                         @foreach ($ornament_types as $type)
                         <option value="{{ Str::slug($type['slug']) }}">{{ $type['nama'] }}</option>
@@ -57,24 +89,27 @@ new class extends Component
                 </div>
                 <div class="grid gap-2">
                     <label>Varian Ornament:</label>
-                    {{-- <Autocomplete
-                        v-model="form.ornament_variant"
-                        v-model:selected="form.ornament_variant_slug"
-                        table="ornaments"
-                        column="varian"
-                        parent="type"
-                        :parent-value="form.ornament_type_slug"
-                        placeholder="Varian Ornament"
-                    />
-                    <InputError :message="form.errors.ornament_variant" /> --}}
+                    <input type="text" wire:model.live.debounce.300ms="inputed_ornament_varian" class="border rounded px-1">
+                    @if(!empty($filtered_ornament_varians))
+                        <ul class="border rounded mt-1 bg-white">
+                            @foreach($filtered_ornament_varians as $varian)
+                                <li 
+                                    class="px-2 py-1 hover:bg-gray-100 cursor-pointer"
+                                    wire:click="selectOrnamentVarian({{ $varian['id'] }})"
+                                >
+                                    {{ $varian['name'] }}
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
                 </div>
                 <div class="grid gap-2">
                     <label>Deskripsi (opt.):</label>
-                    <input type="text" name="description" placeholder="Deskripsi (opt.)" />
+                    <input type="text" name="description" placeholder="Deskripsi (opt.)" class="w-full" />
                 </div>
                 <div class="grid gap-2">
                     <label>Warna Emas:</label>
-                    <select name="gold_color">
+                    <select name="gold_color" class="border rounded w-full">
                         @foreach ($gold_colors as $color)
                         <option value="{{ $color['slug'] }}">{{ $color['value'] }}</option>
                         @endforeach
@@ -94,7 +129,7 @@ new class extends Component
                 </div>
                 <div class="grid gap-2">
                     <label>Berat (g):</label>
-                    <input type="number" step="0.01" name="weight" placeholder="Berat" />
+                    <input type="number" step="0.01" name="weight" placeholder="Berat" class="w-full" />
                 </div>
                 <div class="grid gap-2">
                     <label>Harga per gram:</label>
@@ -102,12 +137,12 @@ new class extends Component
                 </div>
                 <div class="grid gap-2">
                     <Label>Harga total:</Label>
-                    <MoneyInput
+                    {{-- <MoneyInput
                         v-model="form.total_price"
                         placeholder="Harga total"
                         class="border rounded-md px-3 py-1 w-full"
                     />
-                    <InputError :message="form.errors.total_price" />
+                    <InputError :message="form.errors.total_price" /> --}}
                 </div>
                 {{-- <div v-if="selectedSpecs.includes('checkbox_gems')">
                     <div v-for="(gem, index) in form.gems" :key="index" class="mb-4">
