@@ -21,6 +21,8 @@ new class extends Component
     public $gold_colors;
     public $conditions;
 
+    public $parent_slug = '';
+
     public function mount()
     {
         $this->category = Category::where('slug', request()->query('category', ''))->first()->nama;
@@ -38,6 +40,7 @@ new class extends Component
         $this->metal_types = $this->attribute_values['metal-type'] ?? [];
         $this->gold_colors = $this->attribute_values['gold-color'] ?? [];
         $this->conditions = $this->attribute_values['condition'] ?? [];
+        $this->ornament_varians = collect();
         // dump($this->attribute_list);
         // dump($this->attribute_values);
         // dd($this->metal_types);
@@ -49,12 +52,17 @@ new class extends Component
         $data = Category::select('slug', 'name', 'id')->where('parent_slug', $value)->get();
         $this->ornament_varians = $data ?? collect();
         // dd($this->ornament_varians);
+        $this->parent_slug = $value;
+        $this->dispatch('parentSlugChanged', parent_slug: $value);
     }
 
     public function updatedInputedOrnamentVarian($value) {
-        $this->filtered_ornament_varians = $this->ornament_varians->filter(function($item) use ($value) {
-            return str_contains(strtolower($item->name), strtolower($value));
-        })->values()->toArray();
+        if (count($this->ornament_varians) > 0 && !empty($value)) {
+            $this->filtered_ornament_varians = $this->ornament_varians->filter(function($item) use ($value) {
+                return str_contains(strtolower($item->name), strtolower($value));
+            })->values()->toArray();
+        }
+        // dd($this->ornament_varians);
         // dd($this->filtered_ornament_varians);
     }
 
@@ -70,26 +78,26 @@ new class extends Component
 };
 ?>
 
-<div>
+<div class="text-xs">
     <div class="m-2 p-2 border rounded shadow drop-shadow">
         <form action="" method="POST" class="flex flex-col gap-6 relative">
-            <div class="grid grid-cols-2 gap-x-2 gap-y-4">
-                <div class="grid gap-2">
+            <div class="grid grid-cols-2 gap-x-2 gap-y-2">
+                <div class="grid">
                     <label>Kategori Produk:</label>
-                    <input type="text" name="product_category" wire:model="category" class="bg-gray-50 font-bold text-xs w-full" disabled />
+                    <input type="text" name="product_category" wire:model="category" class="bg-gray-50 font-bold w-full p-1" disabled />
                 </div>
-                <div class="grid gap-2">
+                <div class="grid">
                     <label>Tipe Ornament:</label>
-                    <select wire:model.live="selected_ornament_type" class="border rounded w-full">
+                    <select wire:model.live="selected_ornament_type" class="border border-slate-300 rounded w-full p-1">
                         <option value="" disabled>Pilih Tipe Ornament</option>
                         @foreach ($ornament_types as $type)
                         <option value="{{ Str::slug($type['slug']) }}">{{ $type['nama'] }}</option>
                         @endforeach
                     </select>
                 </div>
-                <div class="grid gap-2">
+                <div class="grid">
                     <label>Varian Ornament:</label>
-                    <input type="text" wire:model.live.debounce.300ms="inputed_ornament_varian" class="border rounded px-1">
+                    <input type="text" wire:model.live.debounce.300ms="inputed_ornament_varian" class="border border-slate-300 rounded w-full p-1">
                     @if(!empty($filtered_ornament_varians))
                         <ul class="border rounded mt-1 bg-white">
                             @foreach($filtered_ornament_varians as $varian)
@@ -102,14 +110,15 @@ new class extends Component
                             @endforeach
                         </ul>
                     @endif
+                    <livewire:autocomplete table="categories" wire:model.live="parent_slug" />
                 </div>
-                <div class="grid gap-2">
+                <div class="grid">
                     <label>Deskripsi (opt.):</label>
-                    <input type="text" name="description" placeholder="Deskripsi (opt.)" class="w-full" />
+                    <input type="text" name="description" placeholder="Deskripsi (opt.)" class="border border-slate-300 rounded w-full p-1" />
                 </div>
                 <div class="grid gap-2">
                     <label>Warna Emas:</label>
-                    <select name="gold_color" class="border rounded w-full">
+                    <select name="gold_color" class="border border-slate-300 rounded w-full p-1">
                         @foreach ($gold_colors as $color)
                         <option value="{{ $color['slug'] }}">{{ $color['value'] }}</option>
                         @endforeach
@@ -117,19 +126,11 @@ new class extends Component
                 </div>
                 <div class="grid gap-2">
                     <label>Kadar:</label>
-                    {{-- <Autocomplete
-                        v-model="form.gold_ratio"
-                        v-model:selected="form.gold_ratio_slug"
-                        table="gold_standards"
-                        column="purity"
-                        :parent="null"
-                        :parent-value="null"
-                        placeholder="Kadar"
-                    /> --}}
+                    <livewire:autocomplete table="metal_standards" parent_slug="" />
                 </div>
                 <div class="grid gap-2">
                     <label>Berat (g):</label>
-                    <input type="number" step="0.01" name="weight" placeholder="Berat" class="w-full" />
+                    <input type="number" step="0.01" name="weight" placeholder="Berat" class="border border-slate-300 rounded w-full p-1" />
                 </div>
                 <div class="grid gap-2">
                     <label>Harga per gram:</label>
