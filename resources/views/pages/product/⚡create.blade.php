@@ -110,7 +110,7 @@ new class extends Component
                             @endforeach
                         </ul>
                     @endif
-                    <livewire:autocomplete table="categories" wire:model.live="parent_slug" />
+                    <livewire:autocomplete table="categories" :$parent_slug />
                 </div>
                 <div class="grid">
                     <label>Deskripsi (opt.):</label>
@@ -126,7 +126,7 @@ new class extends Component
                 </div>
                 <div class="grid gap-2">
                     <label>Kadar:</label>
-                    <livewire:autocomplete table="metal_standards" parent_slug="" />
+                    {{-- <livewire:autocomplete table="metal_standards" parent_slug="" /> --}}
                 </div>
                 <div class="grid gap-2">
                     <label>Berat (g):</label>

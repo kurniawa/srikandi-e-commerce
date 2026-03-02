@@ -4,12 +4,16 @@ use Livewire\Component;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Reactive;
 
 new class extends Component
 {
     public string $table;
+
+    #[Reactive]
     public string $parent_slug;
-    public Collection $sources;
+
+    public array $sources = [];
     public string $inputed = '';
     public string $selected = '';
     public array $filtered = [];
@@ -18,43 +22,52 @@ new class extends Component
     public function parentSlugChanged($parent_slug)
     {
         $this->parent_slug = $parent_slug;
-        logger($this->parent_slug);
-        if (!empty($parent_slug)) {
-            $data = DB::table($this->table)->select('id', 'slug', 'name')->where('parent_slug', $parent_slug)->get();
-        } else {
-            $data = DB::table($this->table)->select('id', 'slug', 'name')->get();
-        }
-        $this->sources = $data ?? collect();
-        dd($this->sources);
+        $this->defineSources($parent_slug);
+        // logger($this->parent_slug);
     }
 
     public function mount($table, $parent_slug = '')
     {
         $this->table = $table;
         $this->parent_slug = $parent_slug;
-        if (!empty($parent_slug)) {
-            $data = DB::table($this->table)->select('id', 'slug', 'name')->where('parent_slug', $parent_slug)->get();
-        } else {
-            $data = DB::table($this->table)->select('id', 'slug', 'name')->get();
-        }
-        $this->sources = $data ?? collect();
-
+        $this->defineSources($parent_slug);
         // dd($this->sources);
         // dd($this->sources[0]->id);
     }
 
-    public function updatedInputed($value) {
-        if (count($this->sources) > 0 && !empty($value)) {
-            $this->filtered = $this->sources->filter(function ($item) use ($value)  {
-                return str_contains(strtolower($item->name), strtolower($value));
-            })->values()->toArray();
+    public function defineSources($parent_slug) {
+        if (!empty($parent_slug)) {
+            $data = DB::table($this->table)->select('id', 'slug', 'name')->where('parent_slug', $parent_slug)->get()->toArray();
+        } else {
+            $data = DB::table($this->table)->select('id', 'slug', 'name')->get()->toArray();
         }
-        // dd($this->sources);
-        // dd($this->filtered);
+        $this->sources = $data ?? [];
+    }
+
+    public function updatedInputed($value)
+    {
+        if (empty($value)) {
+            $this->filtered = [];
+            return;
+        }
+
+        $this->filtered = collect($this->sources)
+            ->filter(fn ($item) =>
+                str_contains(
+                    strtolower($item->name ?? ''),
+                    strtolower($value)
+                )
+            )
+            ->values()
+            ->toArray();
     }
 
     public function selectOption($id) {
-        $selected_option = $this->sources->firstWhere('id', $id);
+        // $selected_option = $this->sources->firstWhere('id', $id);
+        $selected_option = current(array_filter(
+            $this->sources,
+            fn($item) => $item->id == $id
+        ));
         // dd($selected_option);
         $this->selected = $selected_option->slug;
         // dd($this->selected);
