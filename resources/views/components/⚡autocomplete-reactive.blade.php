@@ -2,18 +2,31 @@
 
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
-use Livewire\Attributes\Modelable;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Reactive;
 
 new class extends Component
 {
-    #[Modelable]
-    public string $value = '';
-
     public string $table;
+    public string $trigger_name;
+
+    #[Reactive]
     public string $parent_slug;
+
     public array $sources = [];
     public string $inputed = '';
+    public string $selected = '';
     public array $filtered = [];
+
+    #[On('parentSlugChanged')]
+    public function parentSlugChanged($parent_slug, $table)
+    {
+        if ($this->table === $table) {
+            $this->parent_slug = $parent_slug;
+            $this->defineSources($parent_slug);
+            // logger($this->parent_slug);
+        }
+    }
 
     public function mount($table, $parent_slug = '')
     {
@@ -58,7 +71,7 @@ new class extends Component
             fn($item) => $item->id == $id
         ));
         // dd($selected_option);
-        $this->value = $selected_option->slug;
+        $this->selected = $selected_option->slug;
         // dd($this->selected);
         // $this->selected = $this->ornament_varians->firstWhere('id', $id);
         $this->inputed = $selected_option->name;

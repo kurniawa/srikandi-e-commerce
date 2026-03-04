@@ -4,31 +4,32 @@ use Livewire\Component;
 use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\AttributeValue;
-use Illuminate\Support\Collection;
+use App\Livewire\Forms\ProductForm;
 
 new class extends Component
 {
-    public string $category;
+    public ProductForm $form;
+    public ?Category $category = null;
+    public string $product_category = '';
     public $ornament_types;
-    public string $selected_ornament_type = '';
-    public Collection $ornament_varians;
-    public string $inputed_ornament_varian = '';
-    public string $selected_ornament_varian = '';
-    public array $filtered_ornament_varians = [];
+    public string $ornament_type = '';
+    
     public $attribute_list;
     public array $attribute_values;
     public $metal_types;
     public $gold_colors;
     public $conditions;
+    public string $purity = '';
 
-    public $parent_slug = '';
+    public string $ornament_varians_parent = '';
 
     public function mount()
     {
-        $this->category = Category::where('slug', request()->query('category', ''))->first()->nama;
+        $this->category = Category::where('slug', request()->query('category', ''))->first();
+        $this->product_category = $this->category->nama;
         // dd($this->category);
         $this->ornament_types = Category::select('nama', 'slug')->where('classification', 'ornament_types')->get()->toArray();
-        // $this->updatedSelectedOrnamentType($this->selected_ornament_type);
+        // $this->updatedSelectedOrnamentType($this->ornament_type);
         $this->attribute_list = Attribute::orderBy('id')->pluck('slug')->toArray();
         // $this->attribute_values = AttributeValue::select('attribute_id', 'attribute_slug', 'value')->whereIn('attribute_slug', $this->attribute_list)->get();
         $this->attribute_values = AttributeValue::select('attribute_id', 'attribute_slug', 'slug', 'value')
@@ -48,47 +49,38 @@ new class extends Component
         // dd($this->gold_colors);
     }
 
-    public function updatedSelectedOrnamentType($value) {
+    public function updatedOrnamentType($value) {
         $data = Category::select('slug', 'name', 'id')->where('parent_slug', $value)->get();
         $this->ornament_varians = $data ?? collect();
         // dd($this->ornament_varians);
-        $this->parent_slug = $value;
-        $this->dispatch('parentSlugChanged', parent_slug: $value);
+        $this->ornament_varians_parent = $value;
+        $this->dispatch('parentSlugChanged', parent_slug: $value, table: "categories");
     }
 
-    public function updatedInputedOrnamentVarian($value) {
-        if (count($this->ornament_varians) > 0 && !empty($value)) {
-            $this->filtered_ornament_varians = $this->ornament_varians->filter(function($item) use ($value) {
-                return str_contains(strtolower($item->name), strtolower($value));
-            })->values()->toArray();
+    public function runValidation() {
+        if ($this->category->slug = 'perhiasan-emas') {
+            $this->validate([
+                'purity' => 'required|numeric'
+            ]);
         }
-        // dd($this->ornament_varians);
-        // dd($this->filtered_ornament_varians);
     }
-
-    public function selectOrnamentVarian($id) {
-        $selected = $this->ornament_varians->firstWhere('id', $id);
-        // dd($selected);
-        $this->selected_ornament_varian = $selected->slug;
-        // dd($this->selected_ornament_varian);
-        // $this->selected_ornament_varian = $this->ornament_varians->firstWhere('id', $id);
-        $this->inputed_ornament_varian = $selected->name;
-        $this->filtered_ornament_varians = [];
+    public function save() {
+        dd($this->purity);
     }
 };
 ?>
 
 <div class="text-xs">
     <div class="m-2 p-2 border rounded shadow drop-shadow">
-        <form action="" method="POST" class="flex flex-col gap-6 relative">
+        <form wire:submit="save" class="flex flex-col gap-6 relative">
             <div class="grid grid-cols-2 gap-x-2 gap-y-2">
                 <div class="grid">
                     <label>Kategori Produk:</label>
-                    <input type="text" name="product_category" wire:model="category" class="bg-gray-50 font-bold w-full p-1" disabled />
+                    <input type="text" wire:model="product_category" class="bg-gray-50 font-bold w-full p-1" disabled />
                 </div>
                 <div class="grid">
                     <label>Tipe Ornament:</label>
-                    <select wire:model.live="selected_ornament_type" class="border border-slate-300 rounded w-full p-1">
+                    <select wire:model.live="ornament_type" class="border border-slate-300 rounded w-full p-1">
                         <option value="" disabled>Pilih Tipe Ornament</option>
                         @foreach ($ornament_types as $type)
                         <option value="{{ Str::slug($type['slug']) }}">{{ $type['nama'] }}</option>
@@ -97,20 +89,7 @@ new class extends Component
                 </div>
                 <div class="grid">
                     <label>Varian Ornament:</label>
-                    <input type="text" wire:model.live.debounce.300ms="inputed_ornament_varian" class="border border-slate-300 rounded w-full p-1">
-                    @if(!empty($filtered_ornament_varians))
-                        <ul class="border rounded mt-1 bg-white">
-                            @foreach($filtered_ornament_varians as $varian)
-                                <li 
-                                    class="px-2 py-1 hover:bg-gray-100 cursor-pointer"
-                                    wire:click="selectOrnamentVarian({{ $varian['id'] }})"
-                                >
-                                    {{ $varian['name'] }}
-                                </li>
-                            @endforeach
-                        </ul>
-                    @endif
-                    <livewire:autocomplete table="categories" :$parent_slug />
+                    <livewire:autocomplete-reactive table="categories" :parent_slug="$ornament_varians_parent" />
                 </div>
                 <div class="grid">
                     <label>Deskripsi (opt.):</label>
@@ -126,7 +105,7 @@ new class extends Component
                 </div>
                 <div class="grid gap-2">
                     <label>Kadar:</label>
-                    {{-- <livewire:autocomplete table="metal_standards" parent_slug="" /> --}}
+                    <livewire:autocomplete table="metal_standards" parent_slug="" wire:model="purity" />
                 </div>
                 <div class="grid gap-2">
                     <label>Berat (g):</label>
