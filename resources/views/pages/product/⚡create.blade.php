@@ -27,6 +27,7 @@ new class extends Component
     {
         $this->category = Category::where('slug', request()->query('category', ''))->first();
         $this->product_category = $this->category->nama;
+        $this->form->product_category = $this->category->slug;
         // dd($this->category);
         $this->ornament_types = Category::select('nama', 'slug')->where('classification', 'ornament_types')->get()->toArray();
         // $this->updatedSelectedOrnamentType($this->ornament_type);
@@ -54,6 +55,7 @@ new class extends Component
         $this->ornament_varians = $data ?? collect();
         // dd($this->ornament_varians);
         $this->ornament_varians_parent = $value;
+        $this->form->ornament_type = $value;
         $this->dispatch('parentSlugChanged', parent_slug: $value, table: "categories");
     }
 
@@ -65,7 +67,8 @@ new class extends Component
         }
     }
     public function save() {
-        dd($this->purity);
+        dd($this->form);
+        // $this->form->store();
     }
 };
 ?>
@@ -89,15 +92,15 @@ new class extends Component
                 </div>
                 <div class="grid">
                     <label>Varian Ornament:</label>
-                    <livewire:autocomplete-reactive table="categories" :parent_slug="$ornament_varians_parent" />
+                    <livewire:autocomplete-reactive table="categories" :parent_slug="$ornament_varians_parent" wire:model="form.ornament_varian" />
                 </div>
                 <div class="grid">
                     <label>Deskripsi (opt.):</label>
-                    <input type="text" name="description" placeholder="Deskripsi (opt.)" class="border border-slate-300 rounded w-full p-1" />
+                    <input type="text" wire:model="form.description" placeholder="Deskripsi (opt.)" class="border border-slate-300 rounded w-full p-1" />
                 </div>
                 <div class="grid gap-2">
                     <label>Warna Emas:</label>
-                    <select name="gold_color" class="border border-slate-300 rounded w-full p-1">
+                    <select wire:model="form.gold_color" class="border border-slate-300 rounded w-full p-1">
                         @foreach ($gold_colors as $color)
                         <option value="{{ $color['slug'] }}">{{ $color['value'] }}</option>
                         @endforeach
@@ -109,7 +112,7 @@ new class extends Component
                 </div>
                 <div class="grid gap-2">
                     <label>Berat (g):</label>
-                    <input type="number" step="0.01" name="weight" placeholder="Berat" class="border border-slate-300 rounded w-full p-1" />
+                    <input type="number" step="0.01" name="weight" placeholder="Berat" wire:model="form.weight" class="border border-slate-300 rounded w-full p-1" />
                 </div>
                 <div class="grid gap-2">
                     <label>Harga per gram:</label>

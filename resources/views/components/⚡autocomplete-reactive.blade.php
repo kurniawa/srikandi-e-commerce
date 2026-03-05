@@ -4,14 +4,17 @@ use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Reactive;
+use Livewire\Attributes\Modelable;
 
 new class extends Component
 {
     public string $table;
-    public string $trigger_name;
 
     #[Reactive]
     public string $parent_slug;
+
+    #[Modelable]
+    public string $model;
 
     public array $sources = [];
     public string $inputed = '';
@@ -26,6 +29,7 @@ new class extends Component
             $this->defineSources($parent_slug);
             // logger($this->parent_slug);
         }
+        // dd($this->parent_slug);
     }
 
     public function mount($table, $parent_slug = '')
@@ -72,6 +76,7 @@ new class extends Component
         ));
         // dd($selected_option);
         $this->selected = $selected_option->slug;
+        $this->model = $selected_option->slug;
         // dd($this->selected);
         // $this->selected = $this->ornament_varians->firstWhere('id', $id);
         $this->inputed = $selected_option->name;
