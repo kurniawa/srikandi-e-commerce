@@ -2,27 +2,43 @@
 
 namespace App\Livewire\Forms;
 
-use Livewire\Attributes\Validate;
+// use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class ProductForm extends Form
 {
-    #[Validate('string')]
     public string $product_category = '';
-    #[Validate('string')]
     public string $ornament_type = '';
-    #[Validate('string')]
     public string $ornament_varian = '';
-    #[Validate('string')]
     public string $description = '';
-    #[Validate('string')]
     public string $gold_color = '';
-    #[Validate('numeric')]
     public string $purity = '';
-    #[Validate('numeric')]
-    public string $weight = '';
 
+    public ?float $weight = null;
+    public ?float $weight_price = null;
+    public float $total_price = 0;
+
+    // public float $labor_cost = 0;
+    // public float $subtotal = 0;
+    // public float $discount = 0;
+    // public float $grand_total = 0;
+
+    public function calculateWeightPrice()
+    {
+        if ($this->weight && $this->weight_price) {
+            $this->total_price = $this->weight * $this->weight_price;
+        }
+
+        // $this->subtotal = $this->total_price + $this->labor_cost;
+        // $this->grand_total = $this->subtotal - $this->discount;
+    }
+
+    public function calculateTotalPrice() {
+        if ($this->total_price && $this->weight) {
+            $this->weight_price = $this->total_price / $this->weight;
+        }
+    }
     public function store() {
-        dd($this->ornament_type);        
+        dd($this);        
     }
 }
