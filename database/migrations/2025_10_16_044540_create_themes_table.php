@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('motifs', function (Blueprint $table) {
+        Schema::create('themes', function (Blueprint $table) {
             $table->id();
-            $table->string('slug')->unique();
             $table->string('name');
+            $table->string('slug')->unique();
             $table->string('edition')->nullable();
             $table->unsignedSmallInteger('year')->nullable();
             $table->text('description')->nullable();
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('motifs');
+        Schema::dropIfExists('themes');
     }
 };

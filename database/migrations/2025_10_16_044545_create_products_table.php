@@ -16,10 +16,14 @@ return new class extends Migration
             $table->foreignId('category_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('metal_standard_id')->nullable()->constrained()->onDelete('set null');
             $table->foreignId('brand_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('brand_motif_id')->nullable()->constrained()->onDelete('set null');
-            $table->string('slug')->unique();
-            $table->string('shortname', 100);
+            $table->foreignId('theme_id')->nullable()->constrained()->onDelete('set null');
+            $table->string('category')->nullable()->comment('category_slug');
+            $table->string('metal_standard')->nullable()->comment('metal_standard_slug');
+            $table->string('brand')->nullable()->comment('brand_slug');
+            $table->string('theme')->nullable()->comment('theme_slug');
             $table->string('name');
+            $table->string('shortname', 100);
+            $table->string('slug')->unique();
             $table->string('annotation', 50)->nullable()->comment('Keterangan tambahan pada nama perhiasan, bisa ditulis di dalam kurung tertentu');
             $table->decimal('weight', 7, 2)->nullable();
             $table->decimal('price', 15, 2);

@@ -13,31 +13,26 @@ class AttributeSeeder extends Seeder
     public function run(): void
     {
         $attributes = [
-            ['name' => 'Metal Type', 'slug' => 'metal-type', 'data_type' => 'select'], // gold, silver, platinum, etc.
-            ['name' => 'Gold Color', 'slug' => 'gold-color', 'data_type' => 'select'], // yellow, white, rose, chrome, etc.
-            ['name' => 'Tray', 'slug' => 'tray', 'data_type' => 'string'],
-            ['name' => 'Condition', 'slug' => 'condition', 'data_type' => 'number'], // 9:mulus, 8:cacat tidak terlihat, 7:cacat terlihat, 6:jelas ada cacat, 5:rusak
-        ];
-
-        $attribute_values = [
-            // Metal Type values
-            ['attribute_id' => 1,'attribute_slug' => 'metal-type', 'description' => null, 'slug' => 'gold', 'value' => 'Gold'],
-            ['attribute_id' => 1,'attribute_slug' => 'metal-type', 'description' => null, 'slug' => 'silver', 'value' => 'Silver'],
-            // Gold Color values
-            ['attribute_id' => 2,'attribute_slug' => 'gold-color', 'description' => null, 'slug' => 'yellow', 'value' => 'Yellow'],
-            ['attribute_id' => 2,'attribute_slug' => 'gold-color', 'description' => null, 'slug' => 'white', 'value' => 'White'],
-            ['attribute_id' => 2,'attribute_slug' => 'gold-color', 'description' => null, 'slug' => 'rose', 'value' => 'Rose'],
-            ['attribute_id' => 2,'attribute_slug' => 'gold-color', 'description' => null, 'slug' => 'chrome', 'value' => 'Chrome'],
-            // Condition values
-            ['attribute_id' => 4,'attribute_slug' => 'condition', 'slug' => '9', 'value' => '9', 'description' => 'Mulus'],
-            ['attribute_id' => 4,'attribute_slug' => 'condition', 'slug' => '8', 'value' => '8', 'description' => 'Cacat Tidak Terlihat'],
-            ['attribute_id' => 4,'attribute_slug' => 'condition', 'slug' => '7', 'value' => '7', 'description' => 'Cacat Terlihat'],
-            ['attribute_id' => 4,'attribute_slug' => 'condition', 'slug' => '6', 'value' => '6', 'description' => 'Jelas Ada Cacat'],
-            ['attribute_id' => 4,'attribute_slug' => 'condition', 'slug' => '5', 'value' => '5', 'description' => 'Rusak'],
+            ['parent_id' => null, 'parent_slug' => null, 'name' => 'Metal Type', 'slug' => 'metal-type', 'data_type' => 'select', 'description' => null], // gold, silver, platinum, etc.
+            ['parent_id' => null, 'parent_slug' => null, 'name' => 'Gold Color', 'slug' => 'gold-color', 'data_type' => 'select', 'description' => null], // yellow, white, rose, chrome, etc.
+            ['parent_id' => null, 'parent_slug' => null, 'name' => 'Tray', 'slug' => 'tray', 'data_type' => 'string', 'description' => null],
+            ['parent_id' => null, 'parent_slug' => null, 'name' => 'Condition', 'slug' => 'condition', 'data_type' => 'number', 'description' => null], // 9:mulus, 8:cacat tidak terlihat, 7:cacat terlihat, 6:jelas ada cacat, 5:rusak
+            // Metal Type
+            ['parent_id' => 1, 'parent_slug' => 'metal-type', 'name' => 'Gold', 'slug' => 'gold', 'data_type' => null, 'description' => null],
+            ['parent_id' => 1, 'parent_slug' => 'metal-type', 'name' => 'Silver', 'slug' => 'silver', 'data_type' => null, 'description' => null],
+            // Gold Color
+            ['parent_id' => 2, 'parent_slug' => 'gold-color', 'name' => 'Yellow', 'slug' => 'yellow', 'data_type' => null, 'description' => null],
+            ['parent_id' => 2, 'parent_slug' => 'gold-color', 'name' => 'White', 'slug' => 'white', 'data_type' => null, 'description' => null],
+            ['parent_id' => 2, 'parent_slug' => 'gold-color', 'name' => 'Rose', 'slug' => 'rose', 'data_type' => null, 'description' => null],
+            ['parent_id' => 2, 'parent_slug' => 'gold-color', 'name' => 'Chrome', 'slug' => 'chrome', 'data_type' => null, 'description' => null],
+            // Condition
+            ['parent_id' => 4, 'parent_slug' => 'condition', 'name' => '9', 'slug' => '9', 'data_type' => null, 'description' => 'Mulus'],
+            ['parent_id' => 4, 'parent_slug' => 'condition', 'name' => '8', 'slug' => '8', 'data_type' => null, 'description' => 'Cacat Tidak Terlihat'],
+            ['parent_id' => 4, 'parent_slug' => 'condition', 'name' => '7', 'slug' => '7', 'data_type' => null, 'description' => 'Cacat Terlihat'],
+            ['parent_id' => 4, 'parent_slug' => 'condition', 'name' => '6', 'slug' => '6', 'data_type' => null, 'description' => 'Jelas Ada Cacat'],
+            ['parent_id' => 4, 'parent_slug' => 'condition', 'name' => '5', 'slug' => '5', 'data_type' => null, 'description' => 'Rusak'],
         ];
 
         \Illuminate\Support\Facades\DB::table('attributes')->insert($attributes);
-        \Illuminate\Support\Facades\DB::table('attribute_values')->insert($attribute_values);
-
     }
 }

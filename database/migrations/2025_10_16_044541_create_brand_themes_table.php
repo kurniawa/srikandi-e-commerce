@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attribute_values', function (Blueprint $table) {
+        Schema::create('brand_themes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('attribute_id')->constrained('attributes')->onDelete('cascade');
-            $table->string('attribute_slug');
-            $table->string('value');
-            $table->string('slug')->unique();
-            $table->string('description')->nullable();
+            $table->foreignId('brand_id')->constrained()->onDelete('cascade');
+            $table->string('brand_slug');
+            $table->foreignId('theme_id')->constrained()->onDelete('cascade');
+            $table->string('theme_slug');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attribute_values');
+        Schema::dropIfExists('brand_themes');
     }
 };

@@ -22,6 +22,9 @@ new class extends Component
     public string $purity = '';
 
     public string $ornament_varians_parent = '';
+    public array $all_ornament_varians;
+    public array $ornament_varians;
+
 
     public function mount()
     {
@@ -42,7 +45,7 @@ new class extends Component
         $this->metal_types = $this->attribute_values['metal-type'] ?? [];
         $this->gold_colors = $this->attribute_values['gold-color'] ?? [];
         $this->conditions = $this->attribute_values['condition'] ?? [];
-        $this->ornament_varians = collect();
+        $this->all_ornament_varians = Category::select('slug', 'name', 'id', 'parent_slug')->where('classification', 'ornament_varians')->get()->toArray();
         // dump($this->attribute_list);
         // dump($this->attribute_values);
         // dd($this->metal_types);
@@ -51,8 +54,8 @@ new class extends Component
     }
 
     public function updatedOrnamentType($value) {
-        $data = Category::select('slug', 'name', 'id')->where('parent_slug', $value)->get();
-        $this->ornament_varians = $data ?? collect();
+        $data = array_filter($this->all_ornament_varians, fn($obj) => $obj->parent_slug === $value);
+        $this->ornament_varians = array_values($data);
         // dd($this->ornament_varians);
         $this->ornament_varians_parent = $value;
         $this->form->ornament_type = $value;
